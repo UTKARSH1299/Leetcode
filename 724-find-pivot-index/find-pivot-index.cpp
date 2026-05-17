@@ -1,32 +1,31 @@
 class Solution {
 public:
+    int prefixSum(vector<int>& nums){
 
-    int bruteforce(vector<int>& nums){
-        
-        int size=nums.size();
-         
-        for(int i=0; i<size; i++){
-        int lsum=0;
-        int rsum=0;
-            //left sum
-            for(int j=0; j<i; j++)
-                lsum+=nums[j];
-            
-            //right sum
+        vector<int>lsum(nums.size(),0);
+        vector<int>rsum(nums.size(),0);
 
-            for(int j=i+1; j<size; j++)
-                rsum+=nums[j];
-            
 
-            if(lsum==rsum){
+        for(int i=1; i<nums.size();i++){
+
+            lsum[i]=nums[i-1]+lsum[i-1];
+        }
+        for(int i=nums.size()-2; i>=0; i--){
+            rsum[i]=nums[i+1]+rsum[i+1];
+
+        }
+        for(int i=0; i<nums.size(); i++){
+
+            if(lsum[i]==rsum[i]){
                 return i;
             }
-
-            cout<<"for index: "<<i<<" "<<"leftsum: "<<lsum<<" "<<"rsum :"<<rsum<<" "<<endl;
+             
         }
         return -1;
     }
+
+   
     int pivotIndex(vector<int>& nums) {
-        return bruteforce(nums);
+        return prefixSum(nums);
     }
 };
